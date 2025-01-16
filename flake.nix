@@ -19,7 +19,12 @@
         defaultPackage = naersk-lib.buildPackage
           {
             src = ./.;
-            cargoBuildOptions = [ "$cargo_release" ''-j "$NIX_BUILD_CORES"'' "--message-format=$cargo_message_format" ];
+
+            overrideMain = old: {
+              preConfigure = ''
+                cargo_build_options="$cargo_build_options --features citation"
+              '';
+            };
           };
         devShell = with pkgs;
           mkShell {
